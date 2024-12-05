@@ -1,0 +1,7 @@
+m_app:
+  host: 0.0.0.0
+  port: 9090
+
+m_database:
+  type: sqlite
+  path: D:/Projects/Go/MoliCTF/moli.db
