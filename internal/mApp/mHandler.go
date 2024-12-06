@@ -27,13 +27,36 @@ func (mapp *MApp) AdminLogin(ctx *gin.Context) {
 		return
 	}
 
-	adminJwt, err := GenerateJwtForAdmin(admin, mapp.secret)
+	jwtUser := &JwtUser{
+		Name:     admin.Name,
+		Gender:   admin.Gender,
+		Phone:    admin.Phone,
+		Email:    admin.Email,
+		Avatar:   admin.Avatar,
+		Birthday: admin.Birthday,
+		Username: admin.Username,
+		Active:   admin.Active,
+	}
+
+	tokenStr, err := mapp.GenerateJwt(jwtUser)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, nil)
 	}
 
 	expire := config.MConfig.MApp.Expire
-	
-	ctx.SetCookie("token", adminJwt, 60*60*expire, "/", "", false, true)
-	ctx.JSON(http.StatusOK, gin.H{"admin": admin})
+	ctx.SetCookie("token", tokenStr, 60*60*expire, "/", "", false, true)
+
+	// TODO: redirect to admin panel
+	ctx.Redirect(http.StatusFound, "/")
+}
+
+func (mapp *MApp) AdminInfo(ctx *gin.Context) {
+	jwtUser := ctx.MustGet("jwtUser").(*JwtUser)
+	admin, err := mapp.database.GetAdminWithUsername(jwtUser.Username)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, nil)
+	}
+
+	admin.Password = ""
+	ctx.JSON(http.StatusOK, gin.H{"data": admin})
 }

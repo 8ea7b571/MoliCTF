@@ -19,6 +19,7 @@ type MApp struct {
 }
 
 func (mapp *MApp) Run() error {
+	mapp.loadMiddleware()
 	mapp.loadRouter()
 
 	addr := fmt.Sprintf("%s:%d", mapp.Host, mapp.Port)
