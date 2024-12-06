@@ -14,8 +14,9 @@ type mConfig struct {
 }
 
 type mAppConfig struct {
-	Host string `yaml:"host"`
-	Port uint   `yaml:"port"`
+	Host   string `yaml:"host"`
+	Port   uint   `yaml:"port"`
+	Expire int    `yaml:"expire"`
 }
 
 type mDatabaseConfig struct {

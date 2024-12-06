@@ -35,10 +35,15 @@ func NewMDB() *MDB {
 		log.Fatal(err)
 	}
 
+	err = mdb.initDatabase()
+	if err != nil {
+		log.Fatal(err)
+	}
+	
 	return mdb
 }
 
-func (mdb *MDB) InitDatabase() error {
+func (mdb *MDB) initDatabase() error {
 	return mdb.db.AutoMigrate(
 		&Admin{},
 	)

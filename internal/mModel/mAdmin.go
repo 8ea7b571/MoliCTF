@@ -1,6 +1,7 @@
 package mModel
 
 import (
+	"errors"
 	"time"
 
 	"gorm.io/gorm"
@@ -40,4 +41,18 @@ func (mdb *MDB) GetAdminWithId(id int64) (*Admin, error) {
 	admin := &Admin{}
 	result := mdb.db.First(admin, id)
 	return admin, result.Error
+}
+
+func (mdb *MDB) GetAdminWithUsername(username string) (*Admin, error) {
+	admin := &Admin{}
+	result := mdb.db.Where("username = ?", username).First(admin)
+	if result.Error != nil {
+		if errors.Is(gorm.ErrRecordNotFound, result.Error) {
+			return nil, nil
+		} else {
+			return nil, result.Error
+		}
+	}
+
+	return admin, nil
 }

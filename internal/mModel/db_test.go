@@ -11,7 +11,7 @@ func TestInitDatabase(t *testing.T) {
 	config.LoadConfig("D:\\Projects\\Go\\MoliCTF\\config.yaml")
 
 	mdb := NewMDB()
-	err := mdb.InitDatabase()
+	err := mdb.initDatabase()
 	if err != nil {
 		t.Error(err)
 	}
