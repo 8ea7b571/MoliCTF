@@ -2,6 +2,7 @@ m_app:
   host: 0.0.0.0
   port: 9090
   expire: 8
+  template: D:/Projects/Go/MoliCTF/templates/default
 
 m_database:
   type: sqlite

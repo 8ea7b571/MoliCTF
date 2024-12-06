@@ -2,7 +2,6 @@ package mApp
 
 import (
 	"fmt"
-
 	"github.com/8ea7b571/MoliCTF/config"
 	"github.com/8ea7b571/MoliCTF/internal/mModel"
 	"github.com/8ea7b571/MoliCTF/utils"
@@ -18,9 +17,22 @@ type MApp struct {
 	database *mModel.MDB
 }
 
+func (mapp *MApp) loadMiddleware() {
+	mapp.engine.Use(mapp.jwtAuthMiddleware())
+}
+
+func (mapp *MApp) loadTemplates() {
+	assetsPath := fmt.Sprintf("%s/assets", config.MConfig.MApp.Template)
+	htmlPath := fmt.Sprintf("%s/html/*", config.MConfig.MApp.Template)
+
+	mapp.engine.Static("/assets", assetsPath)
+	mapp.engine.LoadHTMLGlob(htmlPath)
+}
+
 func (mapp *MApp) Run() error {
 	mapp.loadMiddleware()
 	mapp.loadRouter()
+	mapp.loadTemplates()
 
 	addr := fmt.Sprintf("%s:%d", mapp.Host, mapp.Port)
 	return mapp.engine.Run(addr)

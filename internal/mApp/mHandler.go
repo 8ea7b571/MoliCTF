@@ -8,6 +8,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+/* simple handler */
+
+func (mapp *MApp) Index(ctx *gin.Context) {
+	ctx.HTML(http.StatusOK, "index.html", gin.H{"page": "index"})
+}
+
+/* api handler */
+
 func (mapp *MApp) AdminLogin(ctx *gin.Context) {
 	var reqData mModel.Admin
 	err := ctx.ShouldBindJSON(&reqData)
