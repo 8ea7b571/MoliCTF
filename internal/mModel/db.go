@@ -2,10 +2,10 @@ package mModel
 
 import (
 	"errors"
-	"gorm.io/driver/sqlite"
 	"log"
 
 	"github.com/8ea7b571/MoliCTF/config"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 

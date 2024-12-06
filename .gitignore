@@ -3,6 +3,7 @@
 
 # Develop dir and files
 .idea
+*.db
 
 # Binaries for programs and plugins
 *.exe
