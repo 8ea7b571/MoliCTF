@@ -5,12 +5,12 @@ import "gorm.io/gorm"
 type Challenge struct {
 	gorm.Model
 
-	Name        string
-	Description string `gorm:"type:text"`
-	Category    string
-	Image       string
-	ConnInfo    string
-	InitScore   uint
-	MiniScore   uint
-	Visible     bool
+	Name        string `json:"name"`
+	Description string `json:"description" gorm:"type:text"`
+	Category    string `json:"category"`
+	Image       string `json:"image"`
+	ConnInfo    string `json:"conn_info"`
+	InitScore   uint   `json:"init_score"`
+	MiniScore   uint   `json:"mini_score"`
+	Visible     bool   `json:"visible"`
 }

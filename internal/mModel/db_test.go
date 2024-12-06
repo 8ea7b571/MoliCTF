@@ -1,9 +1,8 @@
 package mModel
 
 import (
-	"testing"
-
 	"github.com/8ea7b571/MoliCTF/config"
+	"testing"
 )
 
 func TestInitDatabase(t *testing.T) {
