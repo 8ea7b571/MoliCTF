@@ -4,11 +4,10 @@ import (
 	"time"
 
 	"github.com/8ea7b571/MoliCTF/config"
-	"github.com/8ea7b571/MoliCTF/internal/mModel"
 	"github.com/golang-jwt/jwt/v5"
 )
 
-type JwtAdmin struct {
+type JwtUser struct {
 	Name     string    `json:"name"`
 	Gender   uint      `json:"gender"`
 	Phone    string    `json:"phone"`
@@ -22,16 +21,16 @@ type JwtAdmin struct {
 	jwt.RegisteredClaims
 }
 
-func GenerateJwtForAdmin(admin *mModel.Admin, secretKey string) (string, error) {
-	claims := JwtAdmin{
-		Name:     admin.Name,
-		Gender:   admin.Gender,
-		Phone:    admin.Phone,
-		Email:    admin.Email,
-		Avatar:   admin.Avatar,
-		Birthday: admin.Birthday,
-		Username: admin.Username,
-		Active:   admin.Active,
+func (mapp *MApp) GenerateJwt(user *JwtUser) (string, error) {
+	claims := JwtUser{
+		Name:     user.Name,
+		Gender:   user.Gender,
+		Phone:    user.Phone,
+		Email:    user.Email,
+		Avatar:   user.Avatar,
+		Birthday: user.Birthday,
+		Username: user.Username,
+		Active:   user.Active,
 
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(config.MConfig.MApp.Expire) * time.Hour)),
@@ -41,16 +40,16 @@ func GenerateJwtForAdmin(admin *mModel.Admin, secretKey string) (string, error) 
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString([]byte(secretKey))
+	return token.SignedString([]byte(mapp.secret))
 }
 
-func ParseJwtForAdmin(tokenStr, secretKey string) (*mModel.Admin, error) {
-	token, err := jwt.ParseWithClaims(tokenStr, &JwtAdmin{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte(secretKey), nil
+func (mapp *MApp) ParseJwt(tokenStr string) (*JwtUser, error) {
+	token, err := jwt.ParseWithClaims(tokenStr, &JwtUser{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(mapp.secret), nil
 	})
 
-	if claims, ok := token.Claims.(*JwtAdmin); ok && token.Valid {
-		admin := &mModel.Admin{
+	if claims, ok := token.Claims.(*JwtUser); ok && token.Valid {
+		user := &JwtUser{
 			Name:     claims.Name,
 			Gender:   claims.Gender,
 			Phone:    claims.Phone,
@@ -60,7 +59,7 @@ func ParseJwtForAdmin(tokenStr, secretKey string) (*mModel.Admin, error) {
 			Username: claims.Username,
 			Active:   claims.Active,
 		}
-		return admin, nil
+		return user, nil
 	} else {
 		return nil, err
 	}

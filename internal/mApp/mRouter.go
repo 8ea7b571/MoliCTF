@@ -5,6 +5,7 @@ func (mapp *MApp) loadRouter() {
 	{
 		admin := v1.Group("admin")
 		{
+			admin.GET("/info", mapp.AdminInfo)
 			admin.POST("/login", mapp.AdminLogin)
 		}
 	}
