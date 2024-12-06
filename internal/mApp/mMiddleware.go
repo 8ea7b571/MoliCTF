@@ -8,17 +8,22 @@ import (
 )
 
 var skipPaths = []string{
+	"/",
+	"/score",
+	"/users",
+	"/teams",
 	"/v1/admin/login",
-}
-
-func (mapp *MApp) loadMiddleware() {
-	mapp.engine.Use(mapp.jwtAuthMiddleware())
 }
 
 func (mapp *MApp) jwtAuthMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		if strings.HasPrefix(ctx.Request.URL.Path, "/assets") {
+			ctx.Next()
+			return
+		}
+
 		for _, skipPath := range skipPaths {
-			if skipPath == ctx.FullPath() {
+			if skipPath == ctx.Request.URL.Path {
 				ctx.Next()
 				return
 			}

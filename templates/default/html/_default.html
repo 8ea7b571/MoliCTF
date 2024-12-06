@@ -1,0 +1,79 @@
+{{ define "default.html" }}
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> MoliCTF </title>
+  <script src="../assets/js/lib/sober.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="../assets/css/default.css">
+</head>
+
+<body>
+<s-page theme="dark">
+
+  <!-- top appbar -->
+  <s-appbar>
+    <div class="appbar-block" id="appTitle" slot="headline" > MoliCTF </div>
+
+    <!-- page link -->
+    <div class="appbar-block" slot="headline">
+      <div class="appbar-link" onclick="goto('/')"> Home </div>
+    </div>
+
+    <div class="appbar-block" slot="headline">
+      <div class="appbar-link" onclick="goto('/score')"> Score </div>
+    </div>
+
+    <div class="appbar-block" slot="headline">
+      <div class="appbar-link" onclick="goto('/users')"> Users </div>
+    </div>
+
+    <div class="appbar-block" slot="headline">
+      <div class="appbar-link" onclick="goto('/teams')"> Teams </div>
+    </div>
+
+    <div class="appbar-block" slot="headline">
+      <div class="appbar-link" onclick="goto('/challenges')"> Challenges </div>
+    </div>
+
+
+    <!-- action button -->
+    <div slot="action">
+      <s-button type="outlined">
+        <s-icon id="registerButton" slot="start">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+            <path d="M720-400v-120H600v-80h120v-120h80v120h120v80H800v120h-80Zm-360-80q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z"></path>
+          </svg>
+        </s-icon>
+        Register
+      </s-button>
+    </div>
+    <div slot="action"></div>
+    <div slot="action">
+      <s-button>
+        <s-icon id="loginButton" slot="start">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+            <path d="M480-120v-80h280v-560H480v-80h280q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H480Zm-80-160-55-58 102-102H120v-80h327L345-622l55-58 200 200-200 200Z"></path>
+          </svg>
+        </s-icon>
+        Login
+      </s-button>
+    </div>
+
+  </s-appbar>
+
+
+  <!-- content -->
+
+
+
+  <!-- footer -->
+  <div id="footerInfo"> © Copyright <a id="githubLink" href="https://github.com/8ea7b571/MoliCTF"> MoliCTF </a> yvling 2024 </div>
+
+</s-page>
+</body>
+
+<script src="../assets/js/default.js"></script>
+</html>
+
+{{ end }}
