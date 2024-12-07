@@ -19,4 +19,7 @@ type User struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Active   bool   `json:"active"`
+
+	Score  uint `json:"score"`
+	TeamId uint `json:"team_id"`
 }
