@@ -11,11 +11,7 @@ func (mapp *MApp) loadRouter() {
 		user := v1.Group("/user")
 		{
 			user.POST("/login", mapp.UserLogin)
-		}
-
-		admin := v1.Group("admin")
-		{
-			admin.POST("/login", mapp.AdminLogin)
+			user.GET("/logout", mapp.UserLogout)
 		}
 	}
 }

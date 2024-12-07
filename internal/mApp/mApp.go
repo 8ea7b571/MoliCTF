@@ -2,6 +2,7 @@ package mApp
 
 import (
 	"fmt"
+	"github.com/8ea7b571/MoliCTF/internal/mCache"
 
 	"github.com/8ea7b571/MoliCTF/config"
 	"github.com/8ea7b571/MoliCTF/internal/mModel"
@@ -14,6 +15,7 @@ type MApp struct {
 	Port uint
 
 	secret   string
+	cache    *mCache.MCache
 	engine   *gin.Engine
 	database *mModel.MDB
 }
@@ -46,6 +48,7 @@ func NewMApp() *MApp {
 	mapp.Host = config.MConfig.MApp.Host
 	mapp.Port = config.MConfig.MApp.Port
 	mapp.secret = utils.MD5(randomStr)
+	mapp.cache = mCache.NewMCache()
 	mapp.engine = gin.Default()
 	mapp.database = mModel.NewMDB()
 

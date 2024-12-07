@@ -56,7 +56,7 @@ func (mapp *MApp) UserLogin(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"code": http.StatusBadRequest,
-			"msg":  "Invalid request data.",
+			"msg":  "Invalid request data",
 		})
 		return
 	}
@@ -65,7 +65,7 @@ func (mapp *MApp) UserLogin(ctx *gin.Context) {
 	if err != nil || user == nil || user.Password != reqData.Password {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
 			"code": http.StatusUnauthorized,
-			"msg":  "Wrong username or password.",
+			"msg":  "Wrong username or password",
 		})
 		return
 	}
@@ -86,60 +86,25 @@ func (mapp *MApp) UserLogin(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"code": http.StatusInternalServerError,
-			"msg":  "Server error.",
+			"msg":  "Server error",
 		})
 	}
 
+	// set user token to cache
+	mapp.cache.User.Set(jwtUser.Username, tokenStr)
+
 	expire := config.MConfig.MApp.Expire
 	ctx.SetCookie("token", tokenStr, 60*60*expire, "/", "", false, true)
-
 	ctx.JSON(http.StatusOK, gin.H{
 		"code": http.StatusOK,
-		"msg":  "Login success.",
+		"msg":  "Login success",
 	})
 }
 
-/* admin api */
+func (mapp *MApp) UserLogout(ctx *gin.Context) {
+	jwtUser := ctx.MustGet("jwtUser").(*JwtUser)
 
-func (mapp *MApp) AdminLogin(ctx *gin.Context) {
-	var reqData mModel.Admin
-	err := ctx.ShouldBindJSON(&reqData)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, nil)
-		return
-	}
-
-	admin, err := mapp.database.GetAdminWithUsername(reqData.Username)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, nil)
-		return
-	}
-
-	if admin == nil || reqData.Password != admin.Password {
-		ctx.JSON(http.StatusUnauthorized, nil)
-		return
-	}
-
-	jwtUser := &JwtUser{
-		ID:       admin.Model.ID,
-		Name:     admin.Name,
-		Gender:   admin.Gender,
-		Phone:    admin.Phone,
-		Email:    admin.Email,
-		Avatar:   admin.Avatar,
-		Birthday: admin.Birthday,
-		Username: admin.Username,
-		Active:   admin.Active,
-	}
-
-	tokenStr, err := mapp.GenerateJwt(jwtUser)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, nil)
-	}
-
-	expire := config.MConfig.MApp.Expire
-	ctx.SetCookie("token", tokenStr, 60*60*expire, "/", "", false, true)
-
-	// TODO: redirect to admin panel
+	// remove user token from cache
+	mapp.cache.User.Del(jwtUser.Username)
 	ctx.Redirect(http.StatusFound, "/")
 }

@@ -11,7 +11,6 @@ function login() {
             'password': password,
         }
 
-        // TODO: implement login logic
         fetch('/v1/user/login', {
             method: 'POST',
             headers: headers,
