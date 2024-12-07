@@ -20,6 +20,8 @@ var skipPaths = []string{
 
 func (mapp *MApp) jwtAuthMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+		// TODO: improve whitelist detection performance
 		if strings.HasPrefix(ctx.Request.URL.Path, "/assets") {
 			ctx.Next()
 			return
@@ -27,6 +29,15 @@ func (mapp *MApp) jwtAuthMiddleware() gin.HandlerFunc {
 
 		for _, skipPath := range skipPaths {
 			if skipPath == ctx.Request.URL.Path {
+				ctx.Set("userStatus", 0)
+				cToken, err := ctx.Cookie("token")
+				if err == nil || cToken != "" {
+					_, err = mapp.ParseJwt(cToken)
+					if err == nil {
+						ctx.Set("userStatus", 1)
+					}
+				}
+
 				ctx.Next()
 				return
 			}

@@ -8,6 +8,8 @@ import (
 )
 
 type JwtUser struct {
+	ID uint `json:"id"`
+
 	Name     string    `json:"name"`
 	Gender   uint      `json:"gender"`
 	Phone    string    `json:"phone"`
@@ -23,6 +25,7 @@ type JwtUser struct {
 
 func (mapp *MApp) GenerateJwt(user *JwtUser) (string, error) {
 	claims := JwtUser{
+		ID:       user.ID,
 		Name:     user.Name,
 		Gender:   user.Gender,
 		Phone:    user.Phone,
@@ -50,6 +53,7 @@ func (mapp *MApp) ParseJwt(tokenStr string) (*JwtUser, error) {
 
 	if claims, ok := token.Claims.(*JwtUser); ok && token.Valid {
 		user := &JwtUser{
+			ID:       claims.ID,
 			Name:     claims.Name,
 			Gender:   claims.Gender,
 			Phone:    claims.Phone,

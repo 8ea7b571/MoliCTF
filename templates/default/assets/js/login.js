@@ -16,12 +16,27 @@ function login() {
             method: 'POST',
             headers: headers,
             body: JSON.stringify(body),
-        }).then(response => response.json())
-          .then(data => {
-               console.log(data);
-           })
-          .catch(error => {
-               console.error(error);
-           });
+        }).then(response => {
+            if (response.status === 200) {
+                document.querySelector('s-snackbar').setAttribute('type', 'filled');
+            } else {
+                document.querySelector('s-snackbar').setAttribute('type', 'error');
+            }
+
+            return response.json();
+        })
+            .then(data => {
+                document.getElementById('snackbarMsg').innerText = data['msg'];
+                document.getElementById('snackbarBtn').click();
+
+                if (data['code'] === 200) {
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 2000);
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }
 }

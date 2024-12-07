@@ -47,7 +47,7 @@ func (mdb *MDB) GetAdminWithUsername(username string) (*Admin, error) {
 	admin := &Admin{}
 	result := mdb.db.Where("username = ?", username).First(admin)
 	if result.Error != nil {
-		if errors.Is(gorm.ErrRecordNotFound, result.Error) {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return nil, nil
 		} else {
 			return nil, result.Error
