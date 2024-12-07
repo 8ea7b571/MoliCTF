@@ -12,6 +12,9 @@ var skipPaths = []string{
 	"/score",
 	"/users",
 	"/teams",
+	"/login",
+	"/register",
+	"/v1/user/login",
 	"/v1/admin/login",
 }
 

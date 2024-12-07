@@ -1,6 +1,7 @@
 package mApp
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/8ea7b571/MoliCTF/config"
@@ -8,13 +9,51 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-/* simple handler */
+/*
+	simple handler
+*/
 
-func (mapp *MApp) Index(ctx *gin.Context) {
-	ctx.HTML(http.StatusOK, "index.html", gin.H{"page": "index"})
+func (mapp *MApp) PageIndex(ctx *gin.Context) {
+	resData := gin.H{
+		"app": gin.H{
+			"name": APP_NAME,
+			"desc": APP_DESC,
+			"copy": APP_COPY,
+		},
+	}
+	ctx.HTML(http.StatusOK, "index.html", resData)
 }
 
-/* api handler */
+func (mapp *MApp) PageLogin(ctx *gin.Context) {
+	resData := gin.H{
+		"app": gin.H{
+			"name": APP_NAME,
+			"desc": APP_DESC,
+			"copy": APP_COPY,
+		},
+	}
+	ctx.HTML(http.StatusOK, "login.html", resData)
+}
+
+/*
+	api handler
+*/
+
+/* user api */
+
+func (mapp *MApp) UserLogin(ctx *gin.Context) {
+	var reqData mModel.User
+	err := ctx.ShouldBindJSON(&reqData)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, nil)
+		return
+	}
+
+	fmt.Printf("%+v\n", reqData)
+	ctx.JSON(http.StatusOK, gin.H{"data": "ok"})
+}
+
+/* admin api */
 
 func (mapp *MApp) AdminLogin(ctx *gin.Context) {
 	var reqData mModel.Admin
@@ -56,15 +95,4 @@ func (mapp *MApp) AdminLogin(ctx *gin.Context) {
 
 	// TODO: redirect to admin panel
 	ctx.Redirect(http.StatusFound, "/")
-}
-
-func (mapp *MApp) AdminInfo(ctx *gin.Context) {
-	jwtUser := ctx.MustGet("jwtUser").(*JwtUser)
-	admin, err := mapp.database.GetAdminWithUsername(jwtUser.Username)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, nil)
-	}
-
-	admin.Password = ""
-	ctx.JSON(http.StatusOK, gin.H{"data": admin})
 }
