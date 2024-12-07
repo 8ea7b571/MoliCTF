@@ -2,6 +2,7 @@ package mApp
 
 import (
 	"fmt"
+
 	"github.com/8ea7b571/MoliCTF/config"
 	"github.com/8ea7b571/MoliCTF/internal/mModel"
 	"github.com/8ea7b571/MoliCTF/utils"
@@ -23,7 +24,7 @@ func (mapp *MApp) loadMiddleware() {
 
 func (mapp *MApp) loadTemplates() {
 	assetsPath := fmt.Sprintf("%s/assets", config.MConfig.MApp.Template)
-	htmlPath := fmt.Sprintf("%s/html/*", config.MConfig.MApp.Template)
+	htmlPath := fmt.Sprintf("%s/html/*.html", config.MConfig.MApp.Template)
 
 	mapp.engine.Static("/assets", assetsPath)
 	mapp.engine.LoadHTMLGlob(htmlPath)

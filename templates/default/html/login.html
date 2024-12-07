@@ -1,4 +1,4 @@
-{{ define "_default.html" }}
+{{ define "login.html" }}
 
 <html lang="en">
 <head>
@@ -6,6 +6,7 @@
   <title> {{ .app.name }} </title>
   <script src="../assets/js/lib/sober.min.js"></script>
   <link rel="stylesheet" type="text/css" href="../assets/css/_default.css">
+  <link rel="stylesheet" type="text/css" href="../assets/css/login.css">
   <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
 </head>
 
@@ -76,9 +77,36 @@
 
   </s-appbar>
 
+  <!-- snackbar -->
+  <s-snackbar align="top" duration="2000">
+    <span id="snackbarBtn" slot="trigger"></span>
+    <span id="snackbarMsg"></span>
+  </s-snackbar>
+
 
   <!-- content -->
-
+  <div class="login-content" id="login-content-frame">
+    <div class="login-content" id="login-title"> Login to MoliCTF </div>
+    <div class="login-content">
+      <s-text-field class="login-input" id="username-input" label="username"></s-text-field>
+    </div>
+    <div class="login-content">
+      <s-text-field class="login-input" id="password-input" label="password" type="password"></s-text-field>
+    </div>
+    <div class="login-content">
+      <s-button class="login-input" id="login-button" onclick="login()">
+        <s-icon slot="start">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+            <path d="M480-120v-80h280v-560H480v-80h280q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H480Zm-80-160-55-58 102-102H120v-80h327L345-622l55-58 200 200-200 200Z"></path>
+          </svg>
+        </s-icon>
+        Login now!
+      </s-button>
+    </div>
+    <div class="login-content" id="login-tips">
+      No account? <a href="/register" id="login-tips-link">Register now!</a>
+    </div>
+  </div>
 
 
   <!-- footer -->
@@ -88,6 +116,7 @@
 </body>
 
 <script src="../assets/js/_default.js"></script>
+<script src="../assets/js/login.js"></script>
 </html>
 
 {{ end }}
