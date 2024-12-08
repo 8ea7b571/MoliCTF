@@ -2,6 +2,8 @@ package mApp
 
 import (
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/8ea7b571/MoliCTF/config"
 	"github.com/8ea7b571/MoliCTF/internal/mModel"
@@ -77,6 +79,101 @@ func (mapp *MApp) UserRegister(ctx *gin.Context) {
 		return
 	}
 
+	firstname := reqData["firstname"]
+	lastname := reqData["lastname"]
+	if firstname == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  "Firstname is required",
+		})
+		return
+	}
+
+	_gender := reqData["gender"]
+	if _gender == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  "Gender is required",
+		})
+		return
+	}
+	gender, _ := strconv.ParseUint(_gender.(string), 10, 64)
+
+	phone := reqData["phone"]
+	if phone == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  "Phone is required",
+		})
+		return
+	}
+
+	email := reqData["email"]
+	if email == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  "Email is required",
+		})
+		return
+	}
+
+	username := reqData["username"]
+	if username == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  "Username is required",
+		})
+		return
+	}
+
+	password1 := reqData["password1"]
+	if password1 == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  "Password is required",
+		})
+		return
+	}
+
+	password2 := reqData["password2"]
+	if password2 == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  "Password confirm is required",
+		})
+		return
+	}
+
+	if password1 != password2 {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  "Passwords do not match",
+		})
+		return
+	}
+
+	user := &mModel.User{
+		Name:     strings.TrimSpace(firstname.(string) + " " + lastname.(string)),
+		Gender:   uint(gender),
+		Phone:    phone.(string),
+		Email:    email.(string),
+		Avatar:   "/upload/images/default-avatar.jpg",
+		Username: username.(string),
+		Password: password1.(string),
+		Active:   true,
+		Score:    0,
+		TeamId:   0,
+	}
+
+	_, err = mapp.database.CreateUser(user)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"code": http.StatusInternalServerError,
+			"msg":  "Server error",
+		})
+		return
+	}
+
 	ctx.JSON(http.StatusOK, gin.H{
 		"code": http.StatusOK,
 		"msg":  "Register success",
@@ -120,6 +217,7 @@ func (mapp *MApp) UserLogin(ctx *gin.Context) {
 			"code": http.StatusInternalServerError,
 			"msg":  "Server error",
 		})
+		return
 	}
 
 	// set user token to cache

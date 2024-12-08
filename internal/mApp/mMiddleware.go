@@ -24,7 +24,7 @@ var skipPaths = []string{
 func (mapp *MApp) jwtAuthMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// skip static files
-		if strings.HasPrefix(ctx.Request.URL.Path, "/assets") {
+		if strings.HasPrefix(ctx.Request.URL.Path, "/assets") || strings.HasPrefix(ctx.Request.URL.Path, "/upload") {
 			ctx.Next()
 			return
 		}
