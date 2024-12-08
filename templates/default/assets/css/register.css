@@ -1,0 +1,75 @@
+.register-content {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.register-input-large {
+    margin-top: 20px;
+    width: 480px;
+}
+
+.register-input-middle {
+    margin-top: 20px;
+    width: 233px;
+}
+
+.register-input-small {
+    margin-top: 20px;
+    width: 180px;
+}
+
+#register-content-frame {
+    width: 600px;
+    height: 580px;
+    margin-top: 100px;
+    border-radius: 16px;
+    background-color: #323536;
+    box-shadow: 0 16px 20px 4px rgb(0, 0, 0, 0.3);
+}
+
+#register-title {
+    padding-top: 40px;
+    padding-bottom: 5px;
+    text-align: center;
+    font-size: 32px;
+}
+
+#firstname-input {
+    margin-right: 5px;
+}
+
+#lastname-input {
+    margin-left: 5px;
+}
+
+#gender-input {
+    margin-top: 20px;
+    margin-left: 8px;
+}
+
+#phone-input {
+    margin-right: 5px;
+}
+
+#email-input {
+    margin-left: 5px;
+}
+
+#register-button {
+    border-radius: 4px;
+    font-weight: bold;
+    height: 48px;
+    line-height: 48px;
+}
+
+#register-tips {
+    width: 480px;
+    margin-top: 25px;
+    text-align: right;
+    color: #9c9c9c;
+}
+
+#register-tips-link {
+    color: #ffffff;
+}

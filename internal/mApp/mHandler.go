@@ -44,11 +44,44 @@ func (mapp *MApp) PageLogin(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "login.html", resData)
 }
 
+func (mapp *MApp) PageRegister(ctx *gin.Context) {
+	userStatus := ctx.GetInt("userStatus")
+
+	resData := gin.H{
+		"app": gin.H{
+			"name": APP_NAME,
+			"desc": APP_DESC,
+			"copy": APP_COPY,
+		},
+		"user": gin.H{
+			"status": userStatus,
+		},
+	}
+	ctx.HTML(http.StatusOK, "register.html", resData)
+}
+
 /*
 	api handler
 */
 
 /* user api */
+//TODO: finish register function
+func (mapp *MApp) UserRegister(ctx *gin.Context) {
+	var reqData map[string]interface{}
+	err := ctx.ShouldBindJSON(&reqData)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  "Invalid request data",
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"code": http.StatusOK,
+		"msg":  "Register success",
+	})
+}
 
 func (mapp *MApp) UserLogin(ctx *gin.Context) {
 	var reqData mModel.User
@@ -77,7 +110,6 @@ func (mapp *MApp) UserLogin(ctx *gin.Context) {
 		Phone:    user.Phone,
 		Email:    user.Email,
 		Avatar:   user.Avatar,
-		Birthday: user.Birthday,
 		Username: user.Username,
 		Active:   user.Active,
 	}

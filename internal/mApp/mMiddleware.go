@@ -15,8 +15,10 @@ var skipPaths = []string{
 	"/login",
 	"/register",
 	"/challenges",
+
 	"/v1/user/login",
 	"/v1/user/logout",
+	"/v1/user/register",
 }
 
 func (mapp *MApp) jwtAuthMiddleware() gin.HandlerFunc {

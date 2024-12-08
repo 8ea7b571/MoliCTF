@@ -25,8 +25,8 @@ function login() {
             return response.json();
         })
             .then(data => {
-                document.getElementById('snackbarMsg').innerText = data['msg'];
-                document.getElementById('snackbarBtn').click();
+                document.getElementById('snackbar-msg').innerText = data['msg'];
+                document.getElementById('snackbar-btn').click();
 
                 if (data['code'] === 200) {
                     setTimeout(() => {

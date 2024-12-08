@@ -3,7 +3,6 @@ package mModel
 import (
 	"errors"
 	"github.com/8ea7b571/MoliCTF/config"
-	"github.com/8ea7b571/MoliCTF/utils"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"log"
@@ -63,7 +62,6 @@ func (mdb *MDB) insertTestData() {
 		Phone:    "13333333333",
 		Email:    "admin@qq.com",
 		Avatar:   "https://yvling.cn/img/logo.jpeg",
-		Birthday: utils.ParseTime("2002-01-01"),
 		Username: "yvling",
 		Password: "123456",
 		Active:   true,
@@ -75,7 +73,6 @@ func (mdb *MDB) insertTestData() {
 		Phone:    "13333333333",
 		Email:    "admin@qq.com",
 		Avatar:   "https://yvling.cn/img/logo.jpeg",
-		Birthday: utils.ParseTime("2002-01-01"),
 		Username: "yvling",
 		Password: "123456",
 		Active:   true,

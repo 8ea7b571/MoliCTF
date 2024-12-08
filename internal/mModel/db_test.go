@@ -3,7 +3,6 @@ package mModel
 import (
 	"fmt"
 	"github.com/8ea7b571/MoliCTF/config"
-	"github.com/8ea7b571/MoliCTF/utils"
 	"testing"
 )
 
@@ -27,7 +26,6 @@ func TestMDB_CreateAdmin(t *testing.T) {
 		Phone:    "13333333333",
 		Email:    "admin@qq.com",
 		Avatar:   "https://yvling.cn/img/logo.jpeg",
-		Birthday: utils.ParseTime("2002-01-22"),
 		Username: "yvling",
 		Password: "123456",
 		Active:   true,
@@ -68,8 +66,7 @@ func TestMDB_UpdateAdmin(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-
-	admin.Birthday = utils.ParseTime("2002-02-25")
+	
 	affectedRows, err := mdb.UpdateAdmin(admin)
 	if err != nil {
 		t.Error(err)

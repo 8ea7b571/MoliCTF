@@ -2,9 +2,9 @@ package mApp
 
 import (
 	"fmt"
-	"github.com/8ea7b571/MoliCTF/internal/mCache"
 
 	"github.com/8ea7b571/MoliCTF/config"
+	"github.com/8ea7b571/MoliCTF/internal/mCache"
 	"github.com/8ea7b571/MoliCTF/internal/mModel"
 	"github.com/8ea7b571/MoliCTF/utils"
 	"github.com/gin-gonic/gin"
