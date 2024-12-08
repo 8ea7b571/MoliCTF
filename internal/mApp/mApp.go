@@ -26,9 +26,11 @@ func (mapp *MApp) loadMiddleware() {
 
 func (mapp *MApp) loadTemplates() {
 	assetsPath := fmt.Sprintf("%s/assets", config.MConfig.MApp.Template)
+	uploadPath := fmt.Sprintf("%s/data/upload", config.MConfig.MApp.Root)
 	htmlPath := fmt.Sprintf("%s/html/*.html", config.MConfig.MApp.Template)
 
 	mapp.engine.Static("/assets", assetsPath)
+	mapp.engine.Static("/upload", uploadPath)
 	mapp.engine.LoadHTMLGlob(htmlPath)
 }
 

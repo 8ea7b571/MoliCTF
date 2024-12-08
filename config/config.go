@@ -16,13 +16,13 @@ type mConfig struct {
 type mAppConfig struct {
 	Host     string `yaml:"host"`
 	Port     uint   `yaml:"port"`
+	Root     string `yaml:"root"`
 	Expire   int    `yaml:"expire"`
 	Template string `yaml:"template"`
 }
 
 type mDatabaseConfig struct {
 	Type string `yaml:"type"`
-	Path string `yaml:"path"`
 }
 
 var MConfig mConfig

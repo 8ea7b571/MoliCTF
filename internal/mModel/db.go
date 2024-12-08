@@ -10,7 +10,6 @@ import (
 
 type MDB struct {
 	Type string
-	Path string
 
 	db *gorm.DB
 }
@@ -20,11 +19,10 @@ func NewMDB() *MDB {
 
 	mdb := new(MDB)
 	mdb.Type = config.MConfig.MDatabase.Type
-	mdb.Path = config.MConfig.MDatabase.Path
 
 	switch mdb.Type {
 	case "sqlite":
-		mdb.db, err = gorm.Open(sqlite.Open(mdb.Path), &gorm.Config{})
+		mdb.db, err = gorm.Open(sqlite.Open(config.MConfig.MApp.Root+"/moli.db"), &gorm.Config{})
 		break
 	default:
 		log.Fatal(errors.New("unknown database type"))
