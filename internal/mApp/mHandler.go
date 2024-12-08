@@ -44,11 +44,44 @@ func (mapp *MApp) PageLogin(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "login.html", resData)
 }
 
+func (mapp *MApp) PageRegister(ctx *gin.Context) {
+	userStatus := ctx.GetInt("userStatus")
+
+	resData := gin.H{
+		"app": gin.H{
+			"name": APP_NAME,
+			"desc": APP_DESC,
+			"copy": APP_COPY,
+		},
+		"user": gin.H{
+			"status": userStatus,
+		},
+	}
+	ctx.HTML(http.StatusOK, "register.html", resData)
+}
+
 /*
 	api handler
 */
 
 /* user api */
+//TODO: finish register function
+func (mapp *MApp) UserRegister(ctx *gin.Context) {
+	var reqData map[string]interface{}
+	err := ctx.ShouldBindJSON(&reqData)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  "Invalid request data",
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"code": http.StatusOK,
+		"msg":  "Register success",
+	})
+}
 
 func (mapp *MApp) UserLogin(ctx *gin.Context) {
 	var reqData mModel.User
@@ -56,7 +89,7 @@ func (mapp *MApp) UserLogin(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"code": http.StatusBadRequest,
-			"msg":  "Invalid request data.",
+			"msg":  "Invalid request data",
 		})
 		return
 	}
@@ -65,7 +98,7 @@ func (mapp *MApp) UserLogin(ctx *gin.Context) {
 	if err != nil || user == nil || user.Password != reqData.Password {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
 			"code": http.StatusUnauthorized,
-			"msg":  "Wrong username or password.",
+			"msg":  "Wrong username or password",
 		})
 		return
 	}
@@ -77,7 +110,6 @@ func (mapp *MApp) UserLogin(ctx *gin.Context) {
 		Phone:    user.Phone,
 		Email:    user.Email,
 		Avatar:   user.Avatar,
-		Birthday: user.Birthday,
 		Username: user.Username,
 		Active:   user.Active,
 	}
@@ -86,60 +118,25 @@ func (mapp *MApp) UserLogin(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"code": http.StatusInternalServerError,
-			"msg":  "Server error.",
+			"msg":  "Server error",
 		})
 	}
 
+	// set user token to cache
+	mapp.cache.User.Set(jwtUser.Username, tokenStr)
+
 	expire := config.MConfig.MApp.Expire
 	ctx.SetCookie("token", tokenStr, 60*60*expire, "/", "", false, true)
-
 	ctx.JSON(http.StatusOK, gin.H{
 		"code": http.StatusOK,
-		"msg":  "Login success.",
+		"msg":  "Login success",
 	})
 }
 
-/* admin api */
+func (mapp *MApp) UserLogout(ctx *gin.Context) {
+	jwtUser := ctx.MustGet("jwtUser").(*JwtUser)
 
-func (mapp *MApp) AdminLogin(ctx *gin.Context) {
-	var reqData mModel.Admin
-	err := ctx.ShouldBindJSON(&reqData)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, nil)
-		return
-	}
-
-	admin, err := mapp.database.GetAdminWithUsername(reqData.Username)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, nil)
-		return
-	}
-
-	if admin == nil || reqData.Password != admin.Password {
-		ctx.JSON(http.StatusUnauthorized, nil)
-		return
-	}
-
-	jwtUser := &JwtUser{
-		ID:       admin.Model.ID,
-		Name:     admin.Name,
-		Gender:   admin.Gender,
-		Phone:    admin.Phone,
-		Email:    admin.Email,
-		Avatar:   admin.Avatar,
-		Birthday: admin.Birthday,
-		Username: admin.Username,
-		Active:   admin.Active,
-	}
-
-	tokenStr, err := mapp.GenerateJwt(jwtUser)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, nil)
-	}
-
-	expire := config.MConfig.MApp.Expire
-	ctx.SetCookie("token", tokenStr, 60*60*expire, "/", "", false, true)
-
-	// TODO: redirect to admin panel
+	// remove user token from cache
+	mapp.cache.User.Del(jwtUser.Username)
 	ctx.Redirect(http.StatusFound, "/")
 }

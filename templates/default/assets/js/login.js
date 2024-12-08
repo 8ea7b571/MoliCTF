@@ -11,7 +11,6 @@ function login() {
             'password': password,
         }
 
-        // TODO: implement login logic
         fetch('/v1/user/login', {
             method: 'POST',
             headers: headers,
@@ -26,8 +25,8 @@ function login() {
             return response.json();
         })
             .then(data => {
-                document.getElementById('snackbarMsg').innerText = data['msg'];
-                document.getElementById('snackbarBtn').click();
+                document.getElementById('snackbar-msg').innerText = data['msg'];
+                document.getElementById('snackbar-btn').click();
 
                 if (data['code'] === 200) {
                     setTimeout(() => {

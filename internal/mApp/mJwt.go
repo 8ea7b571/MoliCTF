@@ -10,12 +10,11 @@ import (
 type JwtUser struct {
 	ID uint `json:"id"`
 
-	Name     string    `json:"name"`
-	Gender   uint      `json:"gender"`
-	Phone    string    `json:"phone"`
-	Email    string    `json:"email"`
-	Avatar   string    `json:"avatar"`
-	Birthday time.Time `json:"birthday"`
+	Name   string `json:"name"`
+	Gender uint   `json:"gender"`
+	Phone  string `json:"phone"`
+	Email  string `json:"email"`
+	Avatar string `json:"avatar"`
 
 	Username string `json:"username"`
 	Active   bool   `json:"active"`
@@ -31,7 +30,6 @@ func (mapp *MApp) GenerateJwt(user *JwtUser) (string, error) {
 		Phone:    user.Phone,
 		Email:    user.Email,
 		Avatar:   user.Avatar,
-		Birthday: user.Birthday,
 		Username: user.Username,
 		Active:   user.Active,
 
@@ -59,7 +57,6 @@ func (mapp *MApp) ParseJwt(tokenStr string) (*JwtUser, error) {
 			Phone:    claims.Phone,
 			Email:    claims.Email,
 			Avatar:   claims.Avatar,
-			Birthday: claims.Birthday,
 			Username: claims.Username,
 			Active:   claims.Active,
 		}

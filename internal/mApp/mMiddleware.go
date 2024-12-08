@@ -14,54 +14,43 @@ var skipPaths = []string{
 	"/teams",
 	"/login",
 	"/register",
+	"/challenges",
+
 	"/v1/user/login",
-	"/v1/admin/login",
+	"/v1/user/logout",
+	"/v1/user/register",
 }
 
 func (mapp *MApp) jwtAuthMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-
-		// TODO: improve whitelist detection performance
+		// skip static files
 		if strings.HasPrefix(ctx.Request.URL.Path, "/assets") {
 			ctx.Next()
 			return
 		}
 
+		ctx.Set("userStatus", 0)
+		cToken, err := ctx.Cookie("token")
+		if err == nil || cToken != "" {
+			jwtUser, err := mapp.ParseJwt(cToken)
+			if err == nil && mapp.cache.User.Get(jwtUser.Username) != nil {
+				ctx.Set("jwtUser", jwtUser)
+				ctx.Set("userStatus", 1)
+			}
+		}
+
+		// skip whitelist paths
 		for _, skipPath := range skipPaths {
 			if skipPath == ctx.Request.URL.Path {
-				ctx.Set("userStatus", 0)
-				cToken, err := ctx.Cookie("token")
-				if err == nil || cToken != "" {
-					_, err = mapp.ParseJwt(cToken)
-					if err == nil {
-						ctx.Set("userStatus", 1)
-					}
-				}
-
 				ctx.Next()
 				return
 			}
 		}
 
-		tokenRaw := strings.Split(ctx.GetHeader("Authorization"), " ")
-		if len(tokenRaw) != 2 {
-			ctx.AbortWithStatus(http.StatusUnauthorized)
-			return
+		if ctx.GetInt("userStatus") == 1 {
+			ctx.Next()
+		} else {
+			ctx.Redirect(http.StatusMovedPermanently, "/login")
 		}
-
-		tokenStr := tokenRaw[1]
-		if tokenStr == "" {
-			ctx.AbortWithStatus(http.StatusUnauthorized)
-			return
-		}
-
-		jwtUser, err := mapp.ParseJwt(tokenStr)
-		if err != nil {
-			ctx.AbortWithStatus(http.StatusUnauthorized)
-			return
-		}
-
-		ctx.Set("jwtUser", jwtUser)
-		ctx.Next()
 	}
 }
