@@ -1,6 +1,7 @@
 package mApp
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -60,6 +61,74 @@ func (mapp *MApp) PageRegister(ctx *gin.Context) {
 		},
 	}
 	ctx.HTML(http.StatusOK, "register.html", resData)
+}
+
+func (mapp *MApp) PageUsers(ctx *gin.Context) {
+	type resUser struct {
+		Id     uint   `json:"id"`
+		Name   string `json:"name"`
+		Gender string `json:"gender"`
+		Phone  string `json:"phone"`
+		Email  string `json:"email"`
+		Team   string `json:"team"`
+		Score  uint   `json:"score"`
+	}
+
+	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
+	limit := 15
+	offset := (page - 1) * limit
+
+	userStatus := ctx.GetInt("userStatus")
+	userPtrList, err := mapp.database.GetUsers(offset, limit)
+	userCount, err := mapp.database.GetUserCount()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"code": http.StatusInternalServerError,
+			"msg":  "Server error",
+		})
+		return
+	}
+
+	userList := make([]resUser, len(userPtrList))
+	for i, userPtr := range userPtrList {
+		if userPtr != nil {
+			teamPtr, _ := mapp.database.GetTeamWithId(userPtr.TeamId)
+			userList[i] = resUser{
+				Id:    userPtr.ID,
+				Name:  userPtr.Name,
+				Phone: userPtr.Phone,
+				Email: userPtr.Email,
+				Score: userPtr.Score,
+				Team:  teamPtr.Name,
+				Gender: func(gender uint) string {
+					if userPtr.Gender == 1 {
+						return "Male"
+					} else {
+						return "Female"
+					}
+				}(userPtr.Gender),
+			}
+		}
+	}
+
+	fmt.Println((userCount + limit - 1) / limit)
+
+	resData := gin.H{
+		"app": gin.H{
+			"name": APP_NAME,
+			"desc": APP_DESC,
+			"copy": APP_COPY,
+		},
+		"user": gin.H{
+			"status": userStatus,
+			"list":   userList,
+		},
+		"data": gin.H{
+			"currentPage": page,
+			"totalPage":   (userCount + limit - 1) / limit,
+		},
+	}
+	ctx.HTML(http.StatusOK, "users.html", resData)
 }
 
 /*

@@ -37,6 +37,12 @@ func (mdb *MDB) UpdateUser(user *User) (int64, error) {
 	return result.RowsAffected, result.Error
 }
 
+func (mdb *MDB) GetUsers(offset, limit int) ([]*User, error) {
+	var users []*User
+	result := mdb.db.Limit(limit).Offset(offset).Find(&users)
+	return users, result.Error
+}
+
 func (mdb *MDB) GetUserWithId(id uint) (*User, error) {
 	user := &User{}
 	result := mdb.db.First(user, id)
@@ -83,4 +89,10 @@ func (mdb *MDB) GetUserWithEmail(email string) (*User, error) {
 	}
 
 	return user, nil
+}
+
+func (mdb *MDB) GetUserCount() (int, error) {
+	var count int64
+	result := mdb.db.Model(&User{}).Count(&count)
+	return int(count), result.Error
 }

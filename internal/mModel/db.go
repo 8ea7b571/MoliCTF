@@ -78,6 +78,15 @@ func (mdb *MDB) insertTestData() {
 		TeamId:   1,
 	}
 
+	team := Team{
+		Name:        "Test team",
+		Description: "just for test",
+		Avatar:      "https://yvling.cn/img/logo.jpeg",
+		Password:    "123456",
+		Score:       20000,
+	}
+
 	mdb.CreateAdmin(&admin)
 	mdb.CreateUser(&user)
+	mdb.CreateTeam(&team)
 }
