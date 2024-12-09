@@ -56,3 +56,31 @@ func (mdb *MDB) GetUserWithUsername(username string) (*User, error) {
 
 	return user, nil
 }
+
+func (mdb *MDB) GetUserWithPhone(phone string) (*User, error) {
+	user := &User{}
+	result := mdb.db.Where("phone = ?", phone).First(user)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
+		} else {
+			return nil, result.Error
+		}
+	}
+
+	return user, nil
+}
+
+func (mdb *MDB) GetUserWithEmail(email string) (*User, error) {
+	user := &User{}
+	result := mdb.db.Where("email = ?", email).First(user)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
+		} else {
+			return nil, result.Error
+		}
+	}
+
+	return user, nil
+}

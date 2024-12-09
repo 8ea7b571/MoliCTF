@@ -67,9 +67,11 @@ func (mapp *MApp) PageRegister(ctx *gin.Context) {
 */
 
 /* user api */
-//TODO: finish register function
+
 func (mapp *MApp) UserRegister(ctx *gin.Context) {
+	var preUser *mModel.User
 	var reqData map[string]interface{}
+
 	err := ctx.ShouldBindJSON(&reqData)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
@@ -108,6 +110,16 @@ func (mapp *MApp) UserRegister(ctx *gin.Context) {
 		return
 	}
 
+	// check if the phone is already used
+	preUser, _ = mapp.database.GetUserWithPhone(phone.(string))
+	if preUser != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  "Phone already used",
+		})
+		return
+	}
+
 	email := reqData["email"]
 	if email == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{
@@ -117,11 +129,31 @@ func (mapp *MApp) UserRegister(ctx *gin.Context) {
 		return
 	}
 
+	// check if the email is already used
+	preUser, _ = mapp.database.GetUserWithEmail(email.(string))
+	if preUser != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  "Email already used",
+		})
+		return
+	}
+
 	username := reqData["username"]
 	if username == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"code": http.StatusBadRequest,
 			"msg":  "Username is required",
+		})
+		return
+	}
+
+	// check if the username is already used
+	preUser, _ = mapp.database.GetUserWithUsername(username.(string))
+	if preUser != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  "Username already used",
 		})
 		return
 	}
