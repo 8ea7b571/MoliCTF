@@ -1,4 +1,4 @@
-{{ define "users.html" }}
+{{ define "teams.html" }}
 
 <html lang="en">
 <head>
@@ -6,7 +6,7 @@
   <title> {{ .app.name }} </title>
   <script src="../assets/js/lib/sober.min.js"></script>
   <link rel="stylesheet" type="text/css" href="../assets/css/_default.css">
-  <link rel="stylesheet" type="text/css" href="../assets/css/users.css">
+  <link rel="stylesheet" type="text/css" href="../assets/css/teams.css">
   <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
 </head>
 
@@ -90,30 +90,26 @@
 
 
   <!-- content -->
-  <div class="users-table-frame">
-    <h2>MoliCTF / Users</h2>
-    <s-table class="users-table">
+  <div class="teams-table-frame">
+    <h2>MoliCTF / Teams</h2>
+    <s-table class="teams-table">
       <s-thead>
         <s-tr>
           <s-th>ID</s-th>
           <s-th>Name</s-th>
-          <s-th>Gender</s-th>
-          <s-th>Introduction</s-th>
-          <s-th>Email</s-th>
+          <s-th>Description</s-th>
+          <s-th>MemberNum</s-th>
           <s-th>Score</s-th>
-          <s-th>Team</s-th>
         </s-tr>
       </s-thead>
       <s-tbody>
-        {{ range $i, $user := .data.userList }}
+        {{ range $i, $team := .data.teamList }}
         <s-tr>
-          <s-td>{{ $user.Id }}</s-td>
-          <s-td>{{ $user.Name }}</s-td>
-          <s-td>{{ $user.Gender }}</s-td>
-          <s-td>{{ $user.Introduction }}</s-td>
-          <s-td>{{ $user.Email }}</s-td>
-          <s-td>{{ $user.Score }}</s-td>
-          <s-td>{{ $user.Team }}</s-td>
+          <s-td>{{ $team.Id }}</s-td>
+          <s-td>{{ $team.Name }}</s-td>
+          <s-td>{{ $team.Description }}</s-td>
+          <s-td>{{ $team.MemberNum }}</s-td>
+          <s-td>{{ $team.Score }}</s-td>
         </s-tr>
         {{ end }}
       </s-tbody>
@@ -152,7 +148,7 @@
 </body>
 
 <script src="../assets/js/_default.js"></script>
-<script src="../assets/js/users.js"></script>
+<script src="../assets/js/teams.js"></script>
 </html>
 
 {{ end }}

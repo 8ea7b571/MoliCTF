@@ -6,6 +6,7 @@ func (mapp *MApp) loadRouter() {
 	mapp.engine.GET("/login", mapp.PageLogin)
 	mapp.engine.GET("/register", mapp.PageRegister)
 	mapp.engine.GET("/users", mapp.PageUsers)
+	mapp.engine.GET("/teams", mapp.PageTeams)
 
 	/* api route */
 	v1 := mapp.engine.Group("v1")
