@@ -7,7 +7,8 @@ import (
 )
 
 func TestMApp(t *testing.T) {
-	config.LoadConfig("D:\\Projects\\Go\\MoliCTF\\config.yaml")
+	//config.LoadConfig("D:\\Projects\\Go\\MoliCTF\\config.yaml")
+	config.LoadConfig("/Users/yvling/Data/project/MoliCTF/config.yaml")
 
 	mapp := NewMApp()
 	err := mapp.Run()

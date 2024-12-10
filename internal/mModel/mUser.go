@@ -8,11 +8,12 @@ import (
 type User struct {
 	gorm.Model
 
-	Name   string `json:"name"`
-	Gender uint   `json:"gender"`
-	Phone  string `json:"phone"`
-	Email  string `json:"email"`
-	Avatar string `json:"avatar"`
+	Name         string `json:"name"`
+	Gender       uint   `json:"gender"`
+	Phone        string `json:"phone"`
+	Email        string `json:"email"`
+	Avatar       string `json:"avatar"`
+	Introduction string `json:"introduction"`
 
 	Username string `json:"username"`
 	Password string `json:"password"`
@@ -35,6 +36,12 @@ func (mdb *MDB) DeleteUser(user *User) (int64, error) {
 func (mdb *MDB) UpdateUser(user *User) (int64, error) {
 	result := mdb.db.Save(user)
 	return result.RowsAffected, result.Error
+}
+
+func (mdb *MDB) GetUsers(offset, limit int) ([]*User, error) {
+	var users []*User
+	result := mdb.db.Limit(limit).Offset(offset).Find(&users)
+	return users, result.Error
 }
 
 func (mdb *MDB) GetUserWithId(id uint) (*User, error) {
@@ -83,4 +90,10 @@ func (mdb *MDB) GetUserWithEmail(email string) (*User, error) {
 	}
 
 	return user, nil
+}
+
+func (mdb *MDB) GetUserCount() (int, error) {
+	var count int64
+	result := mdb.db.Model(&User{}).Count(&count)
+	return int(count), result.Error
 }

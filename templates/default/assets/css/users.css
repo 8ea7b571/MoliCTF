@@ -1,0 +1,21 @@
+.users-table-frame {
+    width: 80%;
+    height: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    box-shadow: 0 16px 20px 4px rgb(0, 0, 0, 0.3);
+}
+
+.users-table {
+    width: 100%;
+    height: 100%;
+}
+
+.pagination-frame {
+    width: 80%;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: right;
+}
