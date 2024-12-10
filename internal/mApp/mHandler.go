@@ -118,11 +118,11 @@ func (mapp *MApp) PageUsers(ctx *gin.Context) {
 		},
 		"user": gin.H{
 			"status": userStatus,
-			"list":   userList,
 		},
 		"data": gin.H{
 			"currentPage": page,
 			"totalPage":   (userCount + limit - 1) / limit,
+			"userList":    userList,
 		},
 	}
 	ctx.HTML(http.StatusOK, "users.html", resData)
