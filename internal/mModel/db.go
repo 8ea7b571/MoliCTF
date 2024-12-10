@@ -54,7 +54,7 @@ func (mdb *MDB) initDatabase() error {
 }
 
 func (mdb *MDB) insertTestData() {
-	for i := 0; i < 30; i++ {
+	for i := 0; i < 16; i++ {
 		admin := Admin{
 			Name:     "喻灵",
 			Gender:   1,
@@ -71,6 +71,7 @@ func (mdb *MDB) insertTestData() {
 			Description: "just for test",
 			Avatar:      "https://yvling.cn/img/logo.jpeg",
 			Password:    "123456",
+			MemberNum:   111,
 			Score:       20000,
 		}
 

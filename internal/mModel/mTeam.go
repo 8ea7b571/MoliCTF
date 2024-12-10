@@ -10,7 +10,8 @@ type Team struct {
 	Avatar      string `json:"avatar"`
 	Password    string `json:"password"`
 
-	Score uint `json:"score"`
+	MemberNum uint `json:"member_num"`
+	Score     uint `json:"score"`
 }
 
 func (mdb *MDB) CreateTeam(team *Team) (int64, error) {
@@ -18,8 +19,20 @@ func (mdb *MDB) CreateTeam(team *Team) (int64, error) {
 	return result.RowsAffected, result.Error
 }
 
+func (mdb *MDB) GetTeams(offset, limit int) ([]*Team, error) {
+	var teams []*Team
+	result := mdb.db.Limit(limit).Offset(offset).Find(&teams)
+	return teams, result.Error
+}
+
 func (mdb *MDB) GetTeamWithId(id uint) (*Team, error) {
 	team := &Team{}
 	result := mdb.db.First(team, id)
 	return team, result.Error
+}
+
+func (mdb *MDB) GetTeamCount() (int, error) {
+	var count int64
+	result := mdb.db.Model(&Team{}).Count(&count)
+	return int(count), result.Error
 }
