@@ -86,7 +86,7 @@
           <s-th>ID</s-th>
           <s-th>Name</s-th>
           <s-th>Gender</s-th>
-          <s-th>Phone</s-th>
+          <s-th>Introduction</s-th>
           <s-th>Email</s-th>
           <s-th>Score</s-th>
           <s-th>Team</s-th>
@@ -98,7 +98,7 @@
           <s-td>{{ $user.Id }}</s-td>
           <s-td>{{ $user.Name }}</s-td>
           <s-td>{{ $user.Gender }}</s-td>
-          <s-td>{{ $user.Phone }}</s-td>
+          <s-td>{{ $user.Introduction }}</s-td>
           <s-td>{{ $user.Email }}</s-td>
           <s-td>{{ $user.Score }}</s-td>
           <s-td>{{ $user.Team }}</s-td>
@@ -111,14 +111,17 @@
 
   <!-- pagination -->
   <div class="pagination-frame">
-    <s-segmented-button>
-      <s-segmented-button-item value="prev">
-        Prev
-      </s-segmented-button-item>
-      <s-segmented-button-item value="next">
-        Next
-      </s-segmented-button-item>
-    </s-segmented-button>
+    <s-icon-button onclick="prevPage()">
+      <s-icon type="chevron_left"></s-icon>
+    </s-icon-button>
+
+    <span>
+      {{ .data.currentPage }} of {{.data.totalPage }}
+    </span>
+
+    <s-icon-button onclick="nextPage()">
+      <s-icon type="chevron_right"></s-icon>
+    </s-icon-button>
   </div>
 
 

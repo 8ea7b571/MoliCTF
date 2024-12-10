@@ -1,9 +1,11 @@
 m_app:
   host: 0.0.0.0
   port: 9090
-  root: D:/Projects/Go/MoliCTF
+#  root: D:/Projects/Go/MoliCTF
+  root: /Users/yvling/Data/project/MoliCTF
   expire: 8
-  template: D:/Projects/Go/MoliCTF/templates/default
+#  template: D:/Projects/Go/MoliCTF/templates/default
+  template: /Users/yvling/Data/project/MoliCTF/templates/default
 
 m_database:
   type: sqlite

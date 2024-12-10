@@ -54,39 +54,42 @@ func (mdb *MDB) initDatabase() error {
 }
 
 func (mdb *MDB) insertTestData() {
-	admin := Admin{
-		Name:     "喻灵",
-		Gender:   1,
-		Phone:    "13333333333",
-		Email:    "admin@qq.com",
-		Avatar:   "https://yvling.cn/img/logo.jpeg",
-		Username: "yvling",
-		Password: "123456",
-		Active:   true,
-	}
+	for i := 0; i < 30; i++ {
+		admin := Admin{
+			Name:     "喻灵",
+			Gender:   1,
+			Phone:    "13333333333",
+			Email:    "admin@qq.com",
+			Avatar:   "https://yvling.cn/img/logo.jpeg",
+			Username: "yvling",
+			Password: "123456",
+			Active:   true,
+		}
 
-	user := User{
-		Name:     "喻灵",
-		Gender:   1,
-		Phone:    "13333333333",
-		Email:    "admin@qq.com",
-		Avatar:   "https://yvling.cn/img/logo.jpeg",
-		Username: "yvling",
-		Password: "123456",
-		Active:   true,
-		Score:    10000,
-		TeamId:   1,
-	}
+		team := Team{
+			Name:        "Test team",
+			Description: "just for test",
+			Avatar:      "https://yvling.cn/img/logo.jpeg",
+			Password:    "123456",
+			Score:       20000,
+		}
 
-	team := Team{
-		Name:        "Test team",
-		Description: "just for test",
-		Avatar:      "https://yvling.cn/img/logo.jpeg",
-		Password:    "123456",
-		Score:       20000,
-	}
+		user := User{
+			Name:         "yvling",
+			Gender:       1,
+			Phone:        "13333333333",
+			Email:        "admin@qq.com",
+			Avatar:       "https://yvling.cn/img/logo.jpeg",
+			Introduction: "Fuck you!",
+			Username:     "yvling",
+			Password:     "123456",
+			Active:       true,
+			Score:        10000,
+			TeamId:       1,
+		}
 
-	mdb.CreateAdmin(&admin)
-	mdb.CreateUser(&user)
-	mdb.CreateTeam(&team)
+		mdb.CreateAdmin(&admin)
+		mdb.CreateUser(&user)
+		mdb.CreateTeam(&team)
+	}
 }
